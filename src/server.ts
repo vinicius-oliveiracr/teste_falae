@@ -1,6 +1,7 @@
 import fastify, { FastifyInstance } from "fastify";
 import { userRoutes } from "./routes/user.routes";
 import { ProductRoutes } from "./routes/product.routes";
+import { OrderRoutes } from "./routes/order.routes";
 
 const app: FastifyInstance = fastify({
     logger: true,
@@ -22,6 +23,10 @@ app.register(userRoutes, {
 
 app.register(ProductRoutes, {
     prefix: '/api/products'
+})
+
+app.register(OrderRoutes, {
+    prefix: '/api/orders'
 })
 
 app.listen({

@@ -1,7 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { ProductUseCase } from "../usecases/product.usecase"
 import { Product, ProductCreate } from "../interfaces/product.interface";
-import { prisma } from "../database/prisma-client";
 
 
 
