@@ -62,34 +62,30 @@ export async function OrderRoutes(fastify: FastifyInstance){
         }
     })
 
-    fastify.put<{ Params: { id: string }; Body: OrderCreate }>('/:id', {
-        schema: {
-            body: {
-                type: 'object',
-                required: ['userId', 'status', 'createdAt', 'totalPrice', 'items'],
-                properties: {
-                    userId: { type: 'number' },
-                    status: { type: 'string' },
-                    createdAt: { type: 'string', format: 'date-time' },
-                    totalPrice: { type: 'number' },
-                    items: {
-                        type: 'array',
-                        items: {
-                            type: 'object',
-                            required: ['productId', 'quantity'],
-                            properties: {
-                                productId: { type: 'number' },
-                                quantity: { type: 'number' },
-                            },
-                        },
-                    },
-                },
-            },
-        },
-    }, async (req, reply) => {
+    fastify.put<{ Params: { id: string }; Body: OrderCreate }>('/:id', async (req, reply) => {
         const { id } = req.params;
         const { userId, status, createdAt, totalPrice, items } = req.body;
         try {
+            const userExists = await prisma.user.findUnique({
+                where: {
+                    id: userId
+                },
+            })
+            if(!userExists){
+                return reply.code(400).send({ message: `User with id ${userId} not found` })
+            }
+
+            for (const item of items){
+                const productExists = await prisma.product.findUnique({
+                    where: {
+                        id: item.productId
+                    },
+                })
+                if(!productExists){
+                    return reply.code(400).send({ message: `Product with id ${item.productId} not found` })
+                }
+            }
+
             const order = await orderUseCase.updateOrder(id, {
                 userId,
                 status,
@@ -103,6 +99,21 @@ export async function OrderRoutes(fastify: FastifyInstance){
             reply.send(order);
         } catch (error) {
             reply.code(500).send({ message: "Error while updating order.", error });
+        }
+    })
+
+    fastify.delete<{ Params: { id: string } }>('/:id', async (req, reply) => {
+        const { id } = req.params;
+        try {
+            
+            const order = await orderUseCase.deleteOrder(id);
+            if (!order) {
+                reply.code(404).send({ message: "Order not found." });
+            }
+            reply.send(order);
+        } catch (error) {
+            console.error("Error details: ", error)
+            reply.code(500).send({ message: "Error while deleting order.", error });
         }
     })
 }

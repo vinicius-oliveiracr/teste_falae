@@ -90,21 +90,54 @@ class OrderRepositoryPrisma implements OrderRepository{
             where: {
                 orderId: id,
             },
-            data:{
+            data: {
                 totalPrice: order.totalPrice,
                 userId: order.userId,
                 status: order.status,
-                createdAt: order.createdAt
+                createdAt: order.createdAt,
+                OrderItem: {
+                    deleteMany: {},
+                    create: order.items.map(item => ({
+                        productId: item.productId,
+                        quantity: item.quantity,
+                    })),
+                },
             },
-            include:{
+            include: {
                 OrderItem: {
                     include: {
-                        product: true
-                    }
-                }
+                        product: true,
+                    },
+                },
+            },
+        });
+    
+        return result;
+    }
+
+    async deleteOrder(id: string): Promise<Boolean> {
+        const order = await prisma.order.findUnique({
+            where: {
+                orderId: id
             }
         })
-        return result
+
+        if(!order){
+            throw new Error ("Order not found.")
+        }
+
+        await prisma.orderItem.deleteMany({
+            where: {
+                orderId: id
+            }
+        })
+
+        await prisma.order.delete({
+            where: {
+                orderId: id
+            }
+        })
+        return true
     }
 }
 

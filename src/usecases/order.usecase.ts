@@ -40,6 +40,26 @@ export class OrderUseCase {
     }
 
    async updateOrder(id: string, order: OrderCreate): Promise<Order | null> {
+
+        const userExists = await prisma.user.findUnique({
+            where: {
+                id: order.userId
+            },
+        })
+        if (!userExists) {
+            throw new Error(`User with id ${order.userId} not found`)
+        }
+
+        for (const item of order.items){
+            const productExists = await prisma.product.findUnique({
+                where: {
+                    id: item.productId
+                },
+            })
+            if (!productExists) {
+                throw new Error(`Product with id ${item.productId} not found`)
+            }
+        }
         return await prisma.order.update({
             where: {
                 orderId: id,
@@ -59,5 +79,10 @@ export class OrderUseCase {
             }
         })
     }
+
+    async deleteOrder(id: string){
+        return await this.orderRepository.deleteOrder(id)
+    }
+
 
 }

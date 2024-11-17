@@ -30,5 +30,6 @@ export interface OrderRepository{
     getOrders(): Promise<Order[]>
     getOrderById(id: string): Promise<Order | null>
     updateOrder(id: string, order: OrderCreate): Promise<Order | null>
+    deleteOrder(id: string): Promise<Boolean>
 
 }
