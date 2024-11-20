@@ -1,11 +1,11 @@
 import React from "react";
 
-const Header = () => {
+const Detail: React.FC = () => {
     return (
         <div>
-            Header
+            Detail
         </div>
     )
 }
 
-export default Header
+export default Detail

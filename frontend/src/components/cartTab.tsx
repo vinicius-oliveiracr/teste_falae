@@ -1,6 +1,6 @@
 import React from "react";
 
-const CartTab = () => {
+const CartTab: React.FC = () => {
     return <div>CartTab</div>;
 };
 

@@ -70,3 +70,13 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white; /* ou qualquer outra cor de fundo */
+  z-index: 1000; /* Para garantir que o header fique acima de outros elementos */
+}
+
