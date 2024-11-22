@@ -1,6 +1,7 @@
 import Product from "../components/product";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import ProductForm from "../components/add_product";
 
 const Home: React.FC = () => {
     const [products, setProducts] = useState<any[]>([]);
@@ -43,6 +44,7 @@ const Home: React.FC = () => {
                     imageUrl={product.imageUrl || "No image found."}
                 />
             ))}
+            <ProductForm />
         </div>
     );
 };
