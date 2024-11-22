@@ -5,7 +5,7 @@ import CartTab from "../components/cartTab"
 const Layout: React.FC = () => {
     return (
         <div className='bg-zinc-200'>
-            <main className='w-[1200px] max-w-full m-auto p-5'>
+            <main className={`w-[1200px] max-w-full m-auto p-5 align-left`}>
                 <Header />
                 <Outlet />
             </main>

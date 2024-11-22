@@ -40,7 +40,7 @@ const Home: React.FC = () => {
                     price={product.price}
                     description={product.description}
                     category={product.category}
-                    imageUrl={product.imageUrl || "default-image.jpg"}
+                    imageUrl={product.imageUrl || "No image found."}
                 />
             ))}
         </div>
