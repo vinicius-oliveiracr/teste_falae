@@ -36,7 +36,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("http://localhost:3333/api/products", product);
+      await axios.post("http://localhost:3333/api/products/create", product);
       alert("Product added successfully");
     } catch (error) {
       alert("Error adding product");
@@ -63,7 +63,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onClose }) => {
           <input
             type="text"
             name="price"
-            value={product.price}
+            value={product.price.toString()}
             onChange={handleChange}
             placeholder="Price"
             required
