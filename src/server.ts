@@ -2,9 +2,16 @@ import fastify, { FastifyInstance } from "fastify";
 import { userRoutes } from "./routes/user.routes";
 import { ProductRoutes } from "./routes/product.routes";
 import { OrderRoutes } from "./routes/order.routes";
+import fastifyCors from "@fastify/cors";
+
+
 
 const app: FastifyInstance = fastify({
     logger: true,
+});
+
+app.register(fastifyCors, {
+    origin: "http://localhost:5173",
 });
 
 
